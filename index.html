@@ -28,7 +28,6 @@
         }
         .badge { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 7px; font-size: 12px; position: absolute; top: -5px; right: -5px; }
         
-        /* ကွန်ပျူတာနှင့် ဖုန်းများတွင် မျက်နှာပြင်အပြည့် (Full Width) ဖြစ်စေရန် 100% သုံးထားပါသည် */
         .container { padding: 20px; width: 100%; max-width: 100%; margin: auto; padding-bottom: 120px; }
         
         #loginScreen { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin: 20px auto; max-width: 500px; width: 100%; }
@@ -40,8 +39,6 @@
         .status-title { font-weight: bold; color: #d35400; font-size: 17px; margin-bottom: 5px; }
         
         .section-title { font-size: 19px; margin-bottom: 15px; color: #333; font-weight: bold; }
-        
-        /* မီနူးကွက်များကို ကွန်ပျူတာမျက်နှာပြင်တွင် အတန်းလိုက် များပြားစွာပေါ်စေရန် Grid ကို ချိန်ညှိထားပါသည် */
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; width: 100%; }
         
         .menu-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; }
@@ -52,7 +49,6 @@
         .order-btn { background: #e67e22; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: bold; font-size: 16px; }
         .order-btn:hover { background: #d35400; }
 
-        /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); justify-content: center; align-items: center; z-index: 100; }
         .modal-content { background: white; width: 90%; max-width: 600px; max-height: 85vh; border-radius: 15px; padding: 25px; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 15px; }
@@ -71,7 +67,6 @@
         .form-group label { display: block; font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #222; }
         .form-group input, .form-group select { width: 100%; padding: 14px; font-size: 16px; border: 2px solid #ccc; border-radius: 10px; background-color: #fff; }
         .checkout-btn { background: #27ae60; color: white; border: none; padding: 16px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 10px; cursor: pointer; margin-top: 10px; }
-        .checkout-btn:disabled { background: #95a5a6; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -103,20 +98,13 @@
                 <label>အခန်းနံပါတ် ရိုက်ထည့်ပါ *</label>
                 <input type="text" id="loginRoomNo" placeholder="ဥပမာ - 1/1">
             </div>
-            <div class="form-group">
-                <label>ငွေချေစနစ် ရွေးချယ်ပါ *</label>
-                <select id="loginPaymentType">
-                    <option value="လက်ငင်း">လက်ငင်း (ငွေသား)</option>
-                    <option value="အကြွေး">အကြွေး</option>
-                </select>
-            </div>
             <button id="loginSubmitBtn" class="checkout-btn" onclick="saveUserInfoAndProceed()">➡️ ဆက်လက်လုပ်ဆောင်မည်</button>
         </div>
 
         <!-- Main Screen -->
         <div id="mainScreen">
             <div class="user-info-bar">
-                📌 ကဒ် [<b id="dispCustCode"></b>] | အဆောင် <b id="dispBuilding"></b>, အခန်း (<b id="dispRoomNo"></b>) | ငွေချေ: <b id="dispPaymentType"></b>
+                📌 ကဒ် [<b id="dispCustCode"></b>] | အဆောင် <b id="dispBuilding"></b>, အခန်း (<b id="dispRoomNo"></b>)
             </div>
 
             <div id="statusBanner" class="status-banner">
@@ -177,7 +165,7 @@
     </div>
 
     <script>
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjKK9SPGfit9859bNu1vcIVFaNcRsFc1iVIBxyDDIrA3fpyQWt1kpYcLIWndhLK5Qw/exec";
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxd4hcuVsvklYu1dZhjSG8iGfW74OObTJouR9IVUqeisXhqoUU1QYCO5ItUBv_xWQxD/exec";
 
         let menus = [];
         let cart = {};
@@ -230,7 +218,6 @@
                 localStorage.setItem("yadanar_custCode", custCode);
                 localStorage.setItem("yadanar_building", userData.building);
                 localStorage.setItem("yadanar_roomNo", userData.roomNo);
-                localStorage.setItem("yadanar_paymentType", userData.paymentType);
 
                 document.getElementById("loginScreen").style.display = "none";
                 document.getElementById("mainScreen").style.display = "block";
@@ -239,7 +226,6 @@
                 document.getElementById("dispCustCode").innerText = custCode;
                 document.getElementById("dispBuilding").innerText = userData.building;
                 document.getElementById("dispRoomNo").innerText = userData.roomNo;
-                document.getElementById("dispPaymentType").innerText = userData.paymentType;
 
                 menus = res.menus || [];
                 renderMenu();
@@ -257,7 +243,6 @@
             let custCode = document.getElementById("loginCustCode").value.trim();
             let building = document.getElementById("loginBuilding").value;
             let roomNo = document.getElementById("loginRoomNo").value.trim();
-            let paymentType = document.getElementById("loginPaymentType").value;
 
             if (!custCode || Number(custCode) < 30160 || Number(custCode) > 30500) {
                 alert("❌ မှန်ကန်သော ကဒ်နံပါတ် (30160 မှ 30500 ကြား) ထည့်ပါ။");
@@ -274,7 +259,6 @@
                 custCode: custCode,
                 building: building,
                 roomNo: roomNo,
-                paymentType: paymentType,
                 deviceId: getDeviceId()
             });
 
@@ -413,7 +397,6 @@
             let custCode = localStorage.getItem("yadanar_custCode");
             let building = localStorage.getItem("yadanar_building");
             let roomNo = localStorage.getItem("yadanar_roomNo");
-            let paymentType = localStorage.getItem("yadanar_paymentType");
 
             if (Object.keys(cart).length === 0) { alert("❌ ခြင်းတောင်းထဲတွင် ဟင်းပွဲ မရှိသေးပါ။"); return; }
 
@@ -433,7 +416,6 @@
                 custCode: custCode,
                 building: building,
                 roomNo: roomNo,
-                paymentType: paymentType,
                 items: itemsArr
             });
 
@@ -461,8 +443,8 @@
             let custCode = localStorage.getItem("yadanar_custCode");
             
             banner.classList.add("active");
-            title.innerHTML = "🛵 " + (initialStatus || "မှာယူထားသည်") + "... (" + orderId + ")";
-            detail.innerHTML = "မှာယူထားသည်များ: <b>" + itemsSummary + "</b>";
+            title.innerHTML = "📝" + (initialStatus || "မှာယူထားသည်") + "... (" + orderId + ")";
+            detail.innerHTML = "ဟင်းပွဲများ:<b>" + itemsSummary + "</b>";
 
             if (statusCheckInterval) clearInterval(statusCheckInterval);
             statusCheckInterval = setInterval(async function() {
@@ -472,19 +454,25 @@
                         const hist = await callBackend({ action: "getUserHistory", custCode: custCode });
                         const latest = hist.history && hist.history.find(h => h.id === orderId);
                         if (latest && latest.status === "ကုန်သွားပြီး") {
-                            title.innerHTML = "❌ တောင်းပန်ပါတယ် ဟင်းပွဲကုန်သွားပါပြီ";
+                            title.innerHTML = "🙏တောင်းပန်ပါတယ် ဟင်းပွဲကုန်သွားပါပြီ";
                             detail.innerHTML = "အော်ဒါ (" + orderId + ") အတွက် ငွေပမာဏ မပေါင်းထည့်ပါ။";
                             banner.style.borderColor = "#e74c3c";
                             title.style.color = "#e74c3c";
                         } else {
                             title.innerHTML = "✅ ပို့ဆောင်ပြီးပါပြီ";
-                            detail.innerHTML = "မှာယူထားသော အစားအစာများ ရောက်ရှိပါပြီ။ သုံးဆောင်နိုင်ပါပြီ။";
+                            detail.innerHTML = "မှာယူထားသော အစားအစာများ ရောက်ရှိပါပြီ။ 😋🍽️သုံးဆောင်နိုင်ပါပြီ။";
                             banner.style.borderColor = "#27ae60";
                             title.style.color = "#27ae60";
                         }
                         clearInterval(statusCheckInterval);
                     } else {
-                        title.innerHTML = "🛵 " + res.activeOrder.status + "... (" + orderId + ")";
+                        // ဒီနေရာမှာ status က "ပို့ဆောင်နေသည်" ဖြစ်နေရင် 🛵💨 လို့ ပေါ်လာအောင် လုပ်ထားပါတယ်
+                        let currentStatus = res.activeOrder.status;
+                        let statusIcon = "👩🏻‍🍳📝";
+                        if (currentStatus && currentStatus.includes("ပို့ဆောင်နေသည်")) {
+                            statusIcon = "🛵💨 ";
+                        }
+                        title.innerHTML = statusIcon + currentStatus + "... (" + orderId + ")";
                     }
                 }
             }, 8000);
